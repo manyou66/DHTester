@@ -1,7 +1,17 @@
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <WiFiServer.h>
+#include <WiFiUdp.h>
+
 // Example testing sketch for various DHT humidity/temperature sensors
 // Written by ladyada, public domain
 
 #include "DHT.h"
+//#include "ESP8266WiFi.h"
+#define WiFi_STA_NAME "MastreEWTC_2.4G";
+#define WiFi_STA_PWD "12345abcde"; 
+const char* ssid = "MastreEWTC_2.4G";
+const char* password = "12345abcde";
 
 #define DHTPIN 23     // what digital pin we're connected to
 
@@ -25,6 +35,26 @@ DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   Serial.begin(9600);
+
+  // For Check Internet
+  Serial.println();
+  Serial.println();
+  Serial.print("Try to Conneted to: ");
+  Serial.println(ssid);
+
+  
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid,password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print("*");
+    }
+    Serial.println();
+    Serial.println("Can Connected WiFi");
+    Serial.println("IP Address ==> ");
+    Serial.println(WiFi.localIP());
+    
+  //For DHT
   Serial.println("DHTxx test!");
 
   dht.begin();
